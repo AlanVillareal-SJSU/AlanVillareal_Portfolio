@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Design portfolio — selected coursework and personal projects by Alan Villareal." />
+    <title>Alan Villareal — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#gallery">Skip to gallery</a>
+
+    <header class="site-header">
+      <div class="wrap">
+        <h1 class="brand">Alan Villareal</h1>
+        <p class="tagline">
+          Graphic and digital design work — posters, typography, packaging concepts, and motion. Click any piece to view it larger.
+        </p>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="wrap">
+        <h2 class="section-title" id="gallery">Selected work</h2>
+        <div class="gallery" role="list">
+          <article class="card" role="listitem" tabindex="0" data-full="artworks/AlanVillareal_DSGD111_Project1TruthPosterFinal.png" data-caption="DSGD 111 — Truth poster (final)">
+            <figure>
+              <img
+                src="artworks/AlanVillareal_DSGD111_Project1TruthPosterFinal.png"
+                alt="Truth poster final project for DSGD 111"
+                loading="eager"
+                fetchpriority="high"
+              />
+              <figcaption>
+                <span class="title">Truth poster</span>
+                <span class="meta">DSGD 111 · PNG</span>
+              </figcaption>
+            </figure>
+          </article>
+
+          <article class="card" role="listitem" tabindex="0" data-full="artworks/AlbumCoverFinalDraft_AlanVillareal_GD83.jpg" data-caption="GD 83 — Album cover (final draft)">
+            <figure>
+              <img src="artworks/AlbumCoverFinalDraft_AlanVillareal_GD83.jpg" alt="Album cover final draft for GD 83" loading="lazy" />
+              <figcaption>
+                <span class="title">Album cover</span>
+                <span class="meta">GD 83 · JPG</span>
+              </figcaption>
+            </figure>
+          </article>
+
+          <article class="card" role="listitem" tabindex="0" data-full="artworks/DSGD99_Problem4Final_AV.png" data-caption="DSGD 99 — Problem 4 (final)">
+            <figure>
+              <img src="artworks/DSGD99_Problem4Final_AV.png" alt="DSGD 99 problem 4 final submission" loading="lazy" />
+              <figcaption>
+                <span class="title">Problem 4</span>
+                <span class="meta">DSGD 99 · PNG</span>
+              </figcaption>
+            </figure>
+          </article>
+
+          <article class="card" role="listitem" tabindex="0" data-full="artworks/FinalSticker_AlanVillareal_GD83.png" data-caption="GD 83 — Final sticker">
+            <figure>
+              <img src="artworks/FinalSticker_AlanVillareal_GD83.png" alt="Final sticker design for GD 83" loading="lazy" />
+              <figcaption>
+                <span class="title">Sticker</span>
+                <span class="meta">GD 83 · PNG</span>
+              </figcaption>
+            </figure>
+          </article>
+
+          <article class="card" role="listitem" tabindex="0" data-full="artworks/TextAsImagePosterAlt_AlanVillareal_GD83.png" data-caption="GD 83 — Text as image poster (alternate)">
+            <figure>
+              <img
+                src="artworks/TextAsImagePosterAlt_AlanVillareal_GD83.png"
+                alt="Text as image poster alternate version for GD 83"
+                loading="lazy"
+              />
+              <figcaption>
+                <span class="title">Text as image</span>
+                <span class="meta">GD 83 · PNG</span>
+              </figcaption>
+            </figure>
+          </article>
+
+          <article class="card" role="listitem" tabindex="0" data-full="artworks/Villareal-Alan_DSGD104_Project2_ANIMATEDPOSTER.gif" data-caption="DSGD 104 — Animated poster (project 2)">
+            <figure>
+              <img
+                src="artworks/Villareal-Alan_DSGD104_Project2_ANIMATEDPOSTER.gif"
+                alt="Animated poster for DSGD 104 project 2"
+                loading="lazy"
+              />
+              <figcaption>
+                <span class="title">Animated poster</span>
+                <span class="meta">DSGD 104 · GIF</span>
+              </figcaption>
+            </figure>
+          </article>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">© <span id="year"></span> Alan Villareal. All work shown for portfolio purposes.</div>
+    </footer>
+
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview" hidden>
+      <div class="lightbox-inner">
+        <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close preview">×</button>
+        <img src="" alt="" id="lightbox-img" />
+        <p class="lightbox-caption" id="lightbox-caption"></p>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var yearEl = document.getElementById("year");
+        if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+        var lightbox = document.getElementById("lightbox");
+        var lightboxImg = document.getElementById("lightbox-img");
+        var lightboxCaption = document.getElementById("lightbox-caption");
+        var closeBtn = document.getElementById("lightbox-close");
+        var cards = document.querySelectorAll(".card");
+        var lastFocus = null;
+
+        function openLightbox(src, alt, caption, trigger) {
+          lastFocus = trigger || document.activeElement;
+          lightboxImg.src = src;
+          lightboxImg.alt = alt;
+          lightboxCaption.textContent = caption || "";
+          lightbox.hidden = false;
+          lightbox.classList.add("is-open");
+          document.body.classList.add("lightbox-open");
+          closeBtn.focus();
+        }
+
+        function closeLightbox() {
+          lightbox.classList.remove("is-open");
+          document.body.classList.remove("lightbox-open");
+          lightboxImg.src = "";
+          lightboxImg.alt = "";
+          lightboxCaption.textContent = "";
+          lightbox.hidden = true;
+          if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+          lastFocus = null;
+        }
+
+        cards.forEach(function (card) {
+          card.addEventListener("click", function () {
+            var full = card.getAttribute("data-full");
+            var cap = card.getAttribute("data-caption");
+            var img = card.querySelector("img");
+            if (full && img) openLightbox(full, img.alt, cap, card);
+          });
+          card.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              card.click();
+            }
+          });
+        });
+
+        closeBtn.addEventListener("click", closeLightbox);
+        lightbox.addEventListener("click", function (e) {
+          if (e.target === lightbox) closeLightbox();
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && lightbox.classList.contains("is-open")) closeLightbox();
+        });
+      })();
+    </script>
+  </body>
+</html>
