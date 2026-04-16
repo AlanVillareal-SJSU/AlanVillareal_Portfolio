@@ -22,7 +22,6 @@
         <p class="tagline">
           My name is Alan Jacob Villareal. I'm currently enrolled in San Jose State University as a Design Studies: Graphic Design major expected to graduate by December 2026. 
           I aspire to work as a Graphic Designer as part of my fascination of creating visual content in a way that satisfies both me and on-lookers.I'm looking to work on graphic design projects by designing posters, icons, and motion graphics. I have profincency utilizing Photoshop, Illustrator, InDesign, AfterEffects and Figma. I go for an overly simple style with a touch of playfulness. 
-          I grew up at San Jose, California in Evergreen
         </p>
       </div>
     </header>
@@ -96,6 +95,73 @@
               </figcaption>
             </figure>
           </article>
+
+          <article class="card card--tabbed" role="listitem" tabindex="0">
+            <div class="card-tablist" role="tablist" aria-label="Bowling project images">
+              <button
+                type="button"
+                class="card-tab is-active"
+                role="tab"
+                id="bowling-tab-set"
+                aria-selected="true"
+                aria-controls="bowling-tab-panel"
+                data-src="artworks/BowlingSet.jpg"
+                data-alt="Bowling set packaging and pieces"
+              >
+                Set
+              </button>
+              <button
+                type="button"
+                class="card-tab"
+                role="tab"
+                id="bowling-tab-cards"
+                aria-selected="false"
+                aria-controls="bowling-tab-panel"
+                data-src="artworks/BowlingCards.jpg"
+                data-alt="Bowling playing cards"
+              >
+                Cards
+              </button>
+              <button
+                type="button"
+                class="card-tab"
+                role="tab"
+                id="bowling-tab-rules"
+                aria-selected="false"
+                aria-controls="bowling-tab-panel"
+                data-src="artworks/BowlingGameRules.JPG"
+                data-alt="Bowling game rules sheet"
+              >
+                Rules
+              </button>
+              <button
+                type="button"
+                class="card-tab"
+                role="tab"
+                id="bowling-tab-score"
+                aria-selected="false"
+                aria-controls="bowling-tab-panel"
+                data-src="artworks/BowlingScoreCard.jpg"
+                data-alt="Bowling score card"
+              >
+                Score
+              </button>
+            </div>
+            <figure>
+              <div id="bowling-tab-panel" class="card-tab-panel" role="tabpanel" aria-labelledby="bowling-tab-set">
+                <img
+                  class="card-tabbed-img"
+                  src="artworks/BowlingSet.jpg"
+                  data-full="artworks/BowlingSet.jpg"
+                  alt="Bowling set packaging and pieces"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption>
+                <span class="title">Bowling</span>
+              </figcaption>
+            </figure>
+          </article>
         </div>
       </div>
     </main>
@@ -142,10 +208,34 @@
           lastFocus = null;
         }
 
+        document.querySelectorAll(".card--tabbed").forEach(function (card) {
+          var panel = card.querySelector(".card-tab-panel");
+          var img = card.querySelector(".card-tabbed-img");
+          var tabs = card.querySelectorAll(".card-tab");
+          tabs.forEach(function (tab) {
+            tab.addEventListener("click", function (e) {
+              e.stopPropagation();
+              var src = tab.getAttribute("data-src");
+              var alt = tab.getAttribute("data-alt") || "";
+              if (!src || !img) return;
+              tabs.forEach(function (t) {
+                t.classList.remove("is-active");
+                t.setAttribute("aria-selected", "false");
+              });
+              tab.classList.add("is-active");
+              tab.setAttribute("aria-selected", "true");
+              img.src = src;
+              img.setAttribute("data-full", src);
+              img.alt = alt;
+              if (panel) panel.setAttribute("aria-labelledby", tab.id);
+            });
+          });
+        });
+
         cards.forEach(function (card) {
           card.addEventListener("click", function () {
-            var full = card.getAttribute("data-full");
             var img = card.querySelector("img");
+            var full = (img && img.getAttribute("data-full")) || card.getAttribute("data-full");
             if (full && img) openLightbox(full, img.alt, card);
           });
           card.addEventListener("keydown", function (e) {
