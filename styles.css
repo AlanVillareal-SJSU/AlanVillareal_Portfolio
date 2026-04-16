@@ -385,6 +385,61 @@ main .wrap {
   overflow-y: auto;
 }
 
+.lightbox-inner--strip {
+  align-items: stretch;
+}
+
+.lightbox-scroll-hint {
+  flex-shrink: 0;
+  margin: 0 0 0.65rem;
+  padding: 0 0.5rem;
+  width: 100%;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.lightbox-strip {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 1rem;
+  width: 100%;
+  max-width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 0.35rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.lightbox-strip-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.lightbox-strip-slide img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100vh - var(--lb-chrome));
+  max-height: calc(100dvh - var(--lb-chrome));
+  object-fit: contain;
+  border-radius: var(--radius);
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+}
+
 .lightbox img {
   display: block;
   flex-shrink: 1;
@@ -460,5 +515,9 @@ body.lightbox-open {
 
   .lightbox-close:hover {
     transform: none;
+  }
+
+  .lightbox-strip {
+    scroll-behavior: auto;
   }
 }

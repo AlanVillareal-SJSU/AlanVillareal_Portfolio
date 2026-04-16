@@ -189,8 +189,17 @@
     </footer>
 
     <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview" hidden>
-      <div class="lightbox-inner">
+      <div class="lightbox-inner" id="lightbox-inner">
         <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close preview">×</button>
+        <p class="lightbox-scroll-hint" id="lightbox-scroll-hint" hidden>Scroll sideways or use arrow keys to view each image.</p>
+        <div
+          class="lightbox-strip"
+          id="lightbox-strip"
+          role="group"
+          aria-label="Bowling prototype images"
+          tabindex="0"
+          hidden
+        ></div>
         <img src="" alt="" id="lightbox-img" />
       </div>
     </div>
@@ -201,13 +210,37 @@
         if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
         var lightbox = document.getElementById("lightbox");
+        var lightboxInner = document.getElementById("lightbox-inner");
         var lightboxImg = document.getElementById("lightbox-img");
+        var lightboxStrip = document.getElementById("lightbox-strip");
+        var lightboxScrollHint = document.getElementById("lightbox-scroll-hint");
         var closeBtn = document.getElementById("lightbox-close");
         var cards = document.querySelectorAll(".card");
         var lastFocus = null;
 
+        function scrollBowlingStrip(delta) {
+          if (!lightboxStrip || lightboxStrip.hidden || !lightboxStrip.children.length) return;
+          var first = lightboxStrip.children[0];
+          var gap = 16;
+          if (typeof window.getComputedStyle === "function") {
+            var g = parseFloat(getComputedStyle(lightboxStrip).gap);
+            if (!isNaN(g)) gap = g;
+          }
+          var step = first ? first.offsetWidth + gap : lightboxStrip.clientWidth;
+          var smooth =
+            typeof window.matchMedia !== "function" || !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          lightboxStrip.scrollBy({ left: delta * step, behavior: smooth ? "smooth" : "auto" });
+        }
+
         function openLightbox(src, alt, trigger) {
           lastFocus = trigger || document.activeElement;
+          lightboxInner.classList.remove("lightbox-inner--strip");
+          lightboxStrip.hidden = true;
+          lightboxStrip.innerHTML = "";
+          lightboxScrollHint.hidden = true;
+          lightboxImg.hidden = false;
+          lightboxImg.removeAttribute("hidden");
+          lightbox.setAttribute("aria-label", "Image preview");
           lightboxImg.src = src;
           lightboxImg.alt = alt;
           lightbox.hidden = false;
@@ -216,11 +249,59 @@
           closeBtn.focus();
         }
 
+        function openBowlingStripLightbox(card) {
+          lastFocus = card;
+          var tabs = card.querySelectorAll(".card-tab");
+          if (!tabs.length || !lightboxStrip) {
+            var img = card.querySelector(".card-tabbed-img");
+            if (img) openLightbox(img.getAttribute("data-full") || img.src, img.alt || "", card);
+            return;
+          }
+          lightboxImg.src = "";
+          lightboxImg.alt = "";
+          lightboxImg.hidden = true;
+          lightboxStrip.innerHTML = "";
+          var activeIndex = 0;
+          for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i].classList.contains("is-active")) activeIndex = i;
+            var slide = document.createElement("div");
+            slide.className = "lightbox-strip-slide";
+            var im = document.createElement("img");
+            im.src = tabs[i].getAttribute("data-src") || "";
+            im.alt = tabs[i].getAttribute("data-alt") || "";
+            slide.appendChild(im);
+            lightboxStrip.appendChild(slide);
+          }
+          lightboxStrip.hidden = false;
+          lightboxScrollHint.hidden = false;
+          lightboxInner.classList.add("lightbox-inner--strip");
+          lightbox.setAttribute("aria-label", "Bowling prototype — scroll for more images");
+          lightbox.hidden = false;
+          lightbox.classList.add("is-open");
+          document.body.classList.add("lightbox-open");
+
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              var slide = lightboxStrip.children[activeIndex];
+              if (slide) slide.scrollIntoView({ inline: "start", block: "nearest" });
+            });
+          });
+
+          closeBtn.focus();
+        }
+
         function closeLightbox() {
           lightbox.classList.remove("is-open");
           document.body.classList.remove("lightbox-open");
           lightboxImg.src = "";
           lightboxImg.alt = "";
+          lightboxImg.hidden = false;
+          lightboxImg.removeAttribute("hidden");
+          lightboxInner.classList.remove("lightbox-inner--strip");
+          lightboxStrip.innerHTML = "";
+          lightboxStrip.hidden = true;
+          lightboxScrollHint.hidden = true;
+          lightbox.setAttribute("aria-label", "Image preview");
           lightbox.hidden = true;
           if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
           lastFocus = null;
@@ -252,6 +333,10 @@
 
         cards.forEach(function (card) {
           card.addEventListener("click", function () {
+            if (card.classList.contains("card--tabbed")) {
+              openBowlingStripLightbox(card);
+              return;
+            }
             var img = card.querySelector("img");
             var full = (img && img.getAttribute("data-full")) || card.getAttribute("data-full");
             if (full && img) openLightbox(full, img.alt, card);
@@ -269,7 +354,15 @@
           if (e.target === lightbox) closeLightbox();
         });
         document.addEventListener("keydown", function (e) {
-          if (e.key === "Escape" && lightbox.classList.contains("is-open")) closeLightbox();
+          if (!lightbox.classList.contains("is-open")) return;
+          if (e.key === "Escape") {
+            closeLightbox();
+            return;
+          }
+          if (!lightboxStrip.hidden && lightboxStrip.children.length && (e.key === "ArrowRight" || e.key === "ArrowLeft")) {
+            e.preventDefault();
+            scrollBowlingStrip(e.key === "ArrowRight" ? 1 : -1);
+          }
         });
       })();
     </script>
