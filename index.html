@@ -29,13 +29,87 @@
     <main id="main">
       <div class="wrap">
         <div class="gallery" id="gallery" role="list">
-          <article class="card" role="listitem" tabindex="0" data-full="artworks/AlanVillareal_DSGD111_Project1TruthPosterFinal.png" data-caption="DSGD 111 — Truth poster (final)">
+          <article class="card card--tabbed" role="listitem" tabindex="0">
+            <div class="card-tablist" role="tablist" aria-label="Bowling project images">
+              <button
+                type="button"
+                class="card-tab is-active"
+                role="tab"
+                id="bowling-tab-set"
+                aria-selected="true"
+                aria-controls="bowling-tab-panel"
+                data-src="artworks/BowlingSet.jpg"
+                data-alt="Bowling set packaging and pieces"
+              >
+                Set
+              </button>
+              <button
+                type="button"
+                class="card-tab"
+                role="tab"
+                id="bowling-tab-cards"
+                aria-selected="false"
+                aria-controls="bowling-tab-panel"
+                data-src="artworks/BowlingCards.jpg"
+                data-alt="Bowling playing cards"
+              >
+                Cards
+              </button>
+              <button
+                type="button"
+                class="card-tab"
+                role="tab"
+                id="bowling-tab-rules"
+                aria-selected="false"
+                aria-controls="bowling-tab-panel"
+                data-src="artworks/BowlingGameRules.JPG"
+                data-alt="Bowling game rules sheet"
+              >
+                Rules
+              </button>
+              <button
+                type="button"
+                class="card-tab"
+                role="tab"
+                id="bowling-tab-score"
+                aria-selected="false"
+                aria-controls="bowling-tab-panel"
+                data-src="artworks/BowlingScoreCard.jpg"
+                data-alt="Bowling score card"
+              >
+                Score
+              </button>
+            </div>
+            <figure>
+              <div id="bowling-tab-panel" class="card-tab-panel" role="tabpanel" aria-labelledby="bowling-tab-set">
+                <img
+                  class="card-tabbed-img"
+                  src="artworks/BowlingSet.jpg"
+                  data-full="artworks/BowlingSet.jpg"
+                  alt="Bowling set packaging and pieces"
+                  loading="eager"
+                  fetchpriority="high"
+                />
+              </div>
+              <figcaption>
+                <span class="title">Bowling Game Prototype</span>
+              </figcaption>
+            </figure>
+          </article>
+
+          <article
+            class="card"
+            role="listitem"
+            tabindex="0"
+            data-full="artworks/AlanVillareal_DSGD111_Project1TruthPosterFinal.png"
+            data-caption="DSGD 111 — Truth poster (final)"
+            data-lightbox-caption="This poster was made as a critique against the overall wealth gap between the obscenely wealthy and the working class. This fake advert is an analogy on how the hard work of the working man is used to redirect most of the earnings to the already-rich."
+          >
             <figure>
               <img
                 src="artworks/AlanVillareal_DSGD111_Project1TruthPosterFinal.png"
                 alt="Truth poster final project for DSGD 111"
-                loading="eager"
-                fetchpriority="high"
+                loading="lazy"
               />
               <figcaption>
                 <span class="title">Rich Man's Drink</span>
@@ -96,73 +170,6 @@
             </figure>
           </article>
 
-          <article class="card card--tabbed" role="listitem" tabindex="0">
-            <div class="card-tablist" role="tablist" aria-label="Bowling project images">
-              <button
-                type="button"
-                class="card-tab is-active"
-                role="tab"
-                id="bowling-tab-set"
-                aria-selected="true"
-                aria-controls="bowling-tab-panel"
-                data-src="artworks/BowlingSet.jpg"
-                data-alt="Bowling set packaging and pieces"
-              >
-                Set
-              </button>
-              <button
-                type="button"
-                class="card-tab"
-                role="tab"
-                id="bowling-tab-cards"
-                aria-selected="false"
-                aria-controls="bowling-tab-panel"
-                data-src="artworks/BowlingCards.jpg"
-                data-alt="Bowling playing cards"
-              >
-                Cards
-              </button>
-              <button
-                type="button"
-                class="card-tab"
-                role="tab"
-                id="bowling-tab-rules"
-                aria-selected="false"
-                aria-controls="bowling-tab-panel"
-                data-src="artworks/BowlingGameRules.JPG"
-                data-alt="Bowling game rules sheet"
-              >
-                Rules
-              </button>
-              <button
-                type="button"
-                class="card-tab"
-                role="tab"
-                id="bowling-tab-score"
-                aria-selected="false"
-                aria-controls="bowling-tab-panel"
-                data-src="artworks/BowlingScoreCard.jpg"
-                data-alt="Bowling score card"
-              >
-                Score
-              </button>
-            </div>
-            <figure>
-              <div id="bowling-tab-panel" class="card-tab-panel" role="tabpanel" aria-labelledby="bowling-tab-set">
-                <img
-                  class="card-tabbed-img"
-                  src="artworks/BowlingSet.jpg"
-                  data-full="artworks/BowlingSet.jpg"
-                  alt="Bowling set packaging and pieces"
-                  loading="lazy"
-                />
-              </div>
-              <figcaption>
-                <span class="title">Bowling Game Prototype</span>
-              </figcaption>
-            </figure>
-          </article>
-
           <article class="card" role="listitem" tabindex="0" data-full="artworks/BowlingGraphics.png" data-caption="Bowling — Graphics">
             <figure>
               <img src="artworks/BowlingGraphics.png" alt="Bowling project graphics" loading="lazy" />
@@ -201,6 +208,7 @@
           hidden
         ></div>
         <img src="" alt="" id="lightbox-img" />
+        <p class="lightbox-caption" id="lightbox-caption" hidden></p>
       </div>
     </div>
 
@@ -214,6 +222,7 @@
         var lightboxImg = document.getElementById("lightbox-img");
         var lightboxStrip = document.getElementById("lightbox-strip");
         var lightboxScrollHint = document.getElementById("lightbox-scroll-hint");
+        var lightboxCaption = document.getElementById("lightbox-caption");
         var closeBtn = document.getElementById("lightbox-close");
         var cards = document.querySelectorAll(".card");
         var lastFocus = null;
@@ -232,6 +241,20 @@
           lightboxStrip.scrollBy({ left: delta * step, behavior: smooth ? "smooth" : "auto" });
         }
 
+        function setLightboxCaption(text) {
+          if (!lightboxCaption) return;
+          var t = (text || "").trim();
+          if (t) {
+            lightboxCaption.textContent = t;
+            lightboxCaption.hidden = false;
+            lightbox.setAttribute("aria-describedby", "lightbox-caption");
+          } else {
+            lightboxCaption.textContent = "";
+            lightboxCaption.hidden = true;
+            lightbox.removeAttribute("aria-describedby");
+          }
+        }
+
         function openLightbox(src, alt, trigger) {
           lastFocus = trigger || document.activeElement;
           lightboxInner.classList.remove("lightbox-inner--strip");
@@ -243,6 +266,11 @@
           lightbox.setAttribute("aria-label", "Image preview");
           lightboxImg.src = src;
           lightboxImg.alt = alt;
+          var cap =
+            trigger && trigger.getAttribute && trigger.getAttribute("data-lightbox-caption")
+              ? trigger.getAttribute("data-lightbox-caption")
+              : "";
+          setLightboxCaption(cap);
           lightbox.hidden = false;
           lightbox.classList.add("is-open");
           document.body.classList.add("lightbox-open");
@@ -260,6 +288,7 @@
           lightboxImg.src = "";
           lightboxImg.alt = "";
           lightboxImg.hidden = true;
+          setLightboxCaption("");
           lightboxStrip.innerHTML = "";
           var activeIndex = 0;
           for (var i = 0; i < tabs.length; i++) {
@@ -301,6 +330,7 @@
           lightboxStrip.innerHTML = "";
           lightboxStrip.hidden = true;
           lightboxScrollHint.hidden = true;
+          setLightboxCaption("");
           lightbox.setAttribute("aria-label", "Image preview");
           lightbox.hidden = true;
           if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();

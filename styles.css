@@ -456,6 +456,22 @@ main .wrap {
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
 }
 
+.lightbox-caption {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  margin: 1rem 0 0;
+  padding: 0 0.35rem;
+  text-align: left;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.lightbox-inner--strip .lightbox-caption {
+  display: none;
+}
+
 .lightbox-close {
   position: absolute;
   top: -2.75rem;
