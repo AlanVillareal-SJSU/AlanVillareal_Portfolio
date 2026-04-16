@@ -20,7 +20,9 @@
       <div class="wrap">
         <h1 class="brand">Alan Villareal</h1>
         <p class="tagline">
-          Graphic and digital design work — posters, typography, packaging concepts, and motion. Click any piece to view it larger.
+          My name is Alan Jacob Villareal. I'm currently enrolled in San Jose State University as a Design Studies: Graphic Design major expected to graduate by December 2026. 
+          I aspire to work as a Graphic Designer as part of my fascination of creating visual content in a way that satisfies both me and on-lookers.I'm looking to work on graphic design projects by designing posters, icons, and motion graphics. I have profincency utilizing Photoshop, Illustrator, InDesign, AfterEffects and Figma. I go for an overly simple style with a touch of playfulness. 
+          I grew up at San Jose, California in Evergreen
         </p>
       </div>
     </header>
@@ -107,7 +109,6 @@
       <div class="lightbox-inner">
         <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close preview">×</button>
         <img src="" alt="" id="lightbox-img" />
-        <p class="lightbox-caption" id="lightbox-caption"></p>
       </div>
     </div>
 
@@ -118,16 +119,14 @@
 
         var lightbox = document.getElementById("lightbox");
         var lightboxImg = document.getElementById("lightbox-img");
-        var lightboxCaption = document.getElementById("lightbox-caption");
         var closeBtn = document.getElementById("lightbox-close");
         var cards = document.querySelectorAll(".card");
         var lastFocus = null;
 
-        function openLightbox(src, alt, caption, trigger) {
+        function openLightbox(src, alt, trigger) {
           lastFocus = trigger || document.activeElement;
           lightboxImg.src = src;
           lightboxImg.alt = alt;
-          lightboxCaption.textContent = caption || "";
           lightbox.hidden = false;
           lightbox.classList.add("is-open");
           document.body.classList.add("lightbox-open");
@@ -139,7 +138,6 @@
           document.body.classList.remove("lightbox-open");
           lightboxImg.src = "";
           lightboxImg.alt = "";
-          lightboxCaption.textContent = "";
           lightbox.hidden = true;
           if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
           lastFocus = null;
@@ -148,9 +146,8 @@
         cards.forEach(function (card) {
           card.addEventListener("click", function () {
             var full = card.getAttribute("data-full");
-            var cap = card.getAttribute("data-caption");
             var img = card.querySelector("img");
-            if (full && img) openLightbox(full, img.alt, cap, card);
+            if (full && img) openLightbox(full, img.alt, card);
           });
           card.addEventListener("keydown", function (e) {
             if (e.key === "Enter" || e.key === " ") {
